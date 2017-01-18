@@ -1,0 +1,24 @@
+{
+  "name": "dalencar/yii2-slate",
+  "description": "Slate intergation with yii2.",
+  "type": "library",
+  "keywords": ["yii2","extension","slate","Restful","document"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Davidson Alencar",
+      "email": "davidson.t.i@gmail.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "*",
+    "erusev/parsedown": "^1.6"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "dalencar\\slate\\": "/"
+    }
+  }
+}
