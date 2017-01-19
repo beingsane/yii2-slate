@@ -11,7 +11,7 @@
 $projectBase = dirname(dirname(__FILE__));
 
 // Include the main script
-require_once $projectBase . '/SlatePHP.php';
+use dalencar\slate\SlatePHP;
 
 // Fetch the config
 $config = json_decode(file_get_contents($projectBase . '/config.json'));

@@ -39,7 +39,9 @@ class SlateAction extends Action {
         $this->controller->layout = false;
 
         $view = $this->controller->getView();
-
+        
+        \Yii::$app->getModule('debug')->instance->allowedIPs = [];
+        
         return $view->renderFile(__DIR__ . '/source/index.php', [
             'rest_url' => $this->restUrl,
         ], $this->controller);

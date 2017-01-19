@@ -12,7 +12,7 @@
 namespace dalencar\slate;
 
 use yii\web\AssetBundle;
-//use yii\web\View;
+use yii\web\View;
 
 class SlateAsset extends AssetBundle {
 
@@ -31,13 +31,13 @@ class SlateAsset extends AssetBundle {
         'javascripts/app/_toc.js',
     ];
     
-//    public $jsOptions = [
-//        'position' => View::POS_HEAD,
-//    ];
+    public $jsOptions = [
+        'position' => View::POS_HEAD,
+    ];
 
     public $css = [
         'stylesheets/screen.css',
-        'stylesheets/print.css',
+        ['stylesheets/print.css', 'media' => 'print'],
         'stylesheets/prism.css',
         'stylesheets/prism_overrides.css',
     ];
