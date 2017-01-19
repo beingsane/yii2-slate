@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SlatePHP
@@ -18,18 +19,18 @@
  *
  * For the full license information, view the LICENSE file that was distributed with this source code.
  */
-
 /*
-@TODO:
-    - Move all the regexes into vars
-    - Write specs
-*/
+  @TODO:
+  - Move all the regexes into vars
+  - Write specs
+ */
 
 namespace dalencar\slate;
 
 use \Parsedown;
 
 class SlatePHP {
+
     protected $fileContents;
     protected $config;
 
@@ -37,20 +38,24 @@ class SlatePHP {
         $this->config = json_decode(file_get_contents(dirname(__FILE__) . '/config.json'));
     }
 
-    public function setSourceDirectory($dir)
-    {
+    function setConfigByFile($fileConfig) {
+        $this->config = json_decode(file_get_contents($fileConfig));
+    }
+    
+    function getConfig() {
+        return $this->config;
+    }
+
+    public function setSourceDirectory($dir) {
         $this->sourceDir = $dir;
     }
 
-    public function setFile($fileName)
-    {
+    public function setFile($fileName) {
         if (file_exists("{$this->sourceDir}/{$fileName}.md")) {
             $this->fileContents = file_get_contents("{$this->sourceDir}/{$fileName}.md");
-        }
-        else if (file_exists("{$this->sourceDir}/_{$fileName}.md")) {
+        } else if (file_exists("{$this->sourceDir}/_{$fileName}.md")) {
             $this->fileContents = file_get_contents("{$this->sourceDir}/_{$fileName}.md");
-        }
-        else {
+        } else {
             // @TODO: Throw an exception
             $this->fileContents = '';
         }
@@ -58,8 +63,7 @@ class SlatePHP {
         return $this;
     }
 
-    public function evaluate($contents = '')
-    {
+    public function evaluate($contents = '') {
         // Do we have any "slate_includes"?
         if (stristr($contents, 'slate_include')) {
             $regex = "/(\s+)slate_include:\s+'(.*)'(,\s+\[(.*)\])?/";
@@ -75,14 +79,14 @@ class SlatePHP {
                 // Parse our attributes
                 if (strlen($attributesString)) {
                     $tmpAttrs = explode(',', $attributesString);
-                    foreach($tmpAttrs as $attr) {
+                    foreach ($tmpAttrs as $attr) {
                         $attrParts = explode(':', $attr);
                         $attributes[trim($attrParts[0])] = trim($attrParts[1]);
                     }
                 }
 
                 // Set attributes / vars
-                foreach($attributes as $variable => $value) {
+                foreach ($attributes as $variable => $value) {
                     $$variable = $value;
                 }
 
@@ -92,18 +96,16 @@ class SlatePHP {
 
                 if (file_exists("{$sourceDir}/{$fileName}.md")) {
                     $partialContents = file_get_contents("{$sourceDir}/includes/{$fileName}.md");
-                }
-                else if (file_exists("{$sourceDir}/_{$fileName}.md")) {
+                } else if (file_exists("{$sourceDir}/_{$fileName}.md")) {
                     $partialContents = file_get_contents("{$sourceDir}/includes/_{$fileName}.md");
-                }
-                else {
+                } else {
                     // @TODO: Throw an exception
                     $partialContents = '';
                 }
 
                 // Apply the leading spaces to each line of the partial content
                 $partialContentLines = explode("\n", $partialContents);
-                foreach($partialContentLines as &$line) {
+                foreach ($partialContentLines as &$line) {
                     $line = "{$leadingSpaces}{$line}";
                 }
                 $partialContents = implode("\n", $partialContentLines);
@@ -115,7 +117,7 @@ class SlatePHP {
                 $contents = preg_replace("/slate_include.*/", $partialContents, $contents);
 
                 // Unset the vars that we created above
-                foreach($attributes as $variable => $value) {
+                foreach ($attributes as $variable => $value) {
                     unset($$variable);
                 }
             }
@@ -128,8 +130,7 @@ class SlatePHP {
         return $contents;
     }
 
-    public function parse()
-    {
+    public function parse() {
         // Evaluate the content
         $this->fileContents = $this->evaluate($this->fileContents);
 
@@ -142,12 +143,12 @@ class SlatePHP {
         return $parsedContents;
     }
 
-    public function addHeaderIdAttributes($contents)
-    {
+    public function addHeaderIdAttributes($contents) {
         // @TODO: Use preg_replace_callback to make the replacements lowercase
         $contents = preg_replace("/\s?<h1>(.*)<\/h1>/", "<h1 id=\"$1\">$1</h1>", $contents);
         $contents = preg_replace("/\s?<h2>(.*)<\/h2>/", "<h2 id=\"$1\">$1</h2>", $contents);
 
         return $contents;
     }
+
 }

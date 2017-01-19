@@ -1,10 +1,13 @@
 <?php
-    $title = strlen($config->title) ? $config->title : 'API Documentation';
-?>
 
-<?php
+use yii\helpers\Html;
 use dalencar\slate\SlateAsset;
-SlateAsset::register($this);
+$slateBundle = SlateAsset::register($this);
+
+$title = strlen($config->title) ? $config->title : 'API Documentation';
+
+/* @var $this yii\web\View */
+
  ?>
 <?php $this->beginPage() ?>
 <!doctype html>
@@ -20,7 +23,6 @@ SlateAsset::register($this);
         <script>
             $(function() {
                 // Code blocks
-                $('pre').hide();
                 $('code').each(function(index, elem) {
                     var $elem = $(elem);
                     var elemClass = $elem.attr('class');
@@ -41,14 +43,21 @@ SlateAsset::register($this);
                         setupLanguages([<?= '"' . implode('","', $config->language_tabs) . '"'; ?>]);
                     }, 0);
                 <?php endif; ?>
+                
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+                
             });
         </script>
     </head>
 
-    <body class="index">
+    <body class="index" data-languages="[]">
         <?php $this->beginBody() ?>
         <div class="tocify-wrapper">
-            <img src="./images/logo.png">
+            <?= Html::img($slateBundle->baseUrl.'/images/logo.png', [
+                'style' => 'margin: 25px 39px 10px;'
+            ]) ?>
             <?php if ($config->language_tabs): ?>
                 <div class="lang-selector">
                     <?php foreach($config->language_tabs as $lang): ?>

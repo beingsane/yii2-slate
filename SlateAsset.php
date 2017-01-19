@@ -41,5 +41,17 @@ class SlateAsset extends AssetBundle {
         'stylesheets/prism.css',
         'stylesheets/prism_overrides.css',
     ];
+    
+    public $publishOptions = [
+        'only' => [
+            'images/*',
+            'javascripts/*',
+            'javascripts/lib/*',
+            'javascripts/app/*',
+            'fonts/*',
+            'stylesheets/*.css'
+        ],
+        "forceCopy" => YII_DEBUG,
+    ];
 
 }
