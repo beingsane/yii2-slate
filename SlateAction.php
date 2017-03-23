@@ -49,7 +49,10 @@ class SlateAction extends Action {
     public function run() {
         
         // Hide debug
-        \Yii::$app->getModule('debug')->instance->allowedIPs = [];
+        $debug = \Yii::$app->getModule('debug');
+        if ($debug) {
+            $debug->instance->allowedIPs = [];
+        }
         
         // Hide yii layout
         $this->controller->layout = false;
