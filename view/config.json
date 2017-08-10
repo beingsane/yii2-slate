@@ -1,0 +1,17 @@
+{
+    "title": "API Reference",
+    "language_tabs": ["bash", "javascript"],
+    "toc_footers": [],
+    "search": true,
+    "menu": [
+        "introduction",
+        "authentication",
+        "apis"
+    ],
+    "menu_includes": [
+        "errors"
+    ],
+    "custom": {
+        "BASE_URL": "http://localhost"
+    }
+}
